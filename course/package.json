@@ -1,0 +1,19 @@
+{
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-jwt": "^4.0.3",
+    "koa-router": "^10.1.1",
+    "koa2-cors": "^2.0.6",
+    "mongoose": "^6.3.3",
+    "uuid": "^8.3.2"
+  },
+  "scripts": {
+    "dev": "nodemon app.js"
+  }
+}
