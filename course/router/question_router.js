@@ -5,8 +5,13 @@
 const Router = require('koa-router')
 const router = new Router()
 const questionController = require('../app/controllers/question_controller')
+const loader = require('../app/utils/loader')
+
+
+//加载配置
 router.post('/question/create', questionController.create)
 router.get('/question/getQuestion', questionController.getQuestion)
 router.post('/question/answer', questionController.answerQuestion)
+router.post('/question/uploadImage', loader.upload.single('file'), questionController.uploadImage)
 module.exports = router
  

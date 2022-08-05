@@ -39,3 +39,12 @@ export const getAnswer = (params:IAnswerList) => {
     params
   })
 }
+
+//图片上传
+export const uploadImage = (data:any) => {
+  return request({
+    url:`/question/uploadImage`,
+    method: 'post',
+    data
+  })
+}

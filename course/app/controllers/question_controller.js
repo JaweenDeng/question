@@ -5,6 +5,7 @@
 const question_model = require('../models/question')
 const bcrypt = require('../utils/bcrypt')
 const answer_model = require('../models/answer')
+
 //创建问题
 const create = async (ctx, next) => {
   const req = ctx.request.body
@@ -78,10 +79,18 @@ const answerQuestion = async (ctx, next) => {
   }
 }
 
-
+//图片上传
+const uploadImage = async (ctx, next) => {
+  ctx.body = {
+    code: 1,
+    msg: 'success',
+    data: `/images/${ctx.file.filename}`
+}
+}
 
 module.exports = {
   create,
   getQuestion,
-  answerQuestion
+  answerQuestion,
+  uploadImage
 }

@@ -29,6 +29,6 @@ const answerSchema = new Schema({
     type: String,
     require: true
   }
-}, {collection: 'question', versionKey: false})
+}, {collection: 'answer', versionKey: false})
 
 module.exports = mongoose.model('answer', answerSchema)

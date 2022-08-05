@@ -5,11 +5,14 @@
 const Koa = require('koa')
 const mongoose = require('mongoose')
 const config = require('./config')
+const path = require('path')
 
 const cors = require('koa2-cors')
 const bodyParser = require('koa-bodyparser')
 const koaJwt = require('koa-jwt')
 const jwt = require('jsonwebtoken')
+// koa-static中间件，用于访问静态文件
+const static = require('koa-static')
 const user_router = require('./router/user_router')
 const question_router = require('./router/question_router')
 const home_router = require('./router/home_router')
@@ -23,6 +26,9 @@ mongoose.connect(config.db, { useNewUrlParser: true }, (err) => {
     console.log('Connecting database successfully');
   }
 })
+
+// 使用中间件，利用path模块的方法拼接出静态文件目录的绝对路径
+app.use(static(path.join(__dirname,'./static')))
 
 //处理跨域问题
 app.use(cors())

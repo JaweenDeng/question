@@ -3,9 +3,10 @@
  * @Description: 创建问题
 -->
 <script setup lang="ts">
-  import { create, getAllQuestion } from "@/api/question"
   import { reactive, onMounted } from "vue"
   import { Toast } from 'vant'
+  import TabBar from '@/components/TabBar.vue'
+  import { create, getAllQuestion, uploadImage } from "@/api/question"
   onMounted(async () => {
     const data = await getAllQuestion()
     console.log(data)
@@ -14,6 +15,15 @@
     name: "",
     des: ""
   })
+  //文件上传
+  const afterRead = async (file) => {
+    console.log(file.file)
+    const formData = new FormData()
+    formData.set('file', file.file)
+    const res = await uploadImage(formData)
+  }
+
+  //提交
   const onSubmit = async (values) => {
     const res = await create(values)
     Object.assign(form, {name:"", des: ""})
@@ -21,7 +31,7 @@
   }
 </script>
 <template>
-  <div>
+  <div class="title">
     发布问题
   </div>
   <van-form @submit="onSubmit">
@@ -39,6 +49,30 @@
       placeholder="问题描述"
       :rules="[{ required: false, message: '请填写问题描述' }]"
     />
-    <van-button round block type="primary" native-type="submit"> 提交 </van-button>
+    <van-field
+      v-model="form.poster"
+      name="name"
+      label="问题图片"
+      placeholder="问题图片"
+      :rules="[{ required: true, message: '请填写问题名称' }]"
+    >
+      <template #input>
+        <van-uploader :after-read="afterRead" />
+      </template>
+    </van-field>
+    <div class="btnWrap">
+      <van-button round block type="primary" size="normal" native-type="submit" class="btn"> 提交 </van-button>
+    </div>
   </van-form>
+  <TabBar />
 </template>
+<style lang="scss" scoped>
+  .title {
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+  }
+  .btnWrap {
+    padding: 20px;
+  }
+</style>

@@ -3,13 +3,13 @@
  * @Description: 详情
 -->
 <script setup lang="ts">
-  import { getQuestionDetail } from '@/api/home'
   import { onMounted, reactive, ref } from 'vue'
+  import { Toast } from 'vant'
   import { useRoute  } from "vue-router"
+  import { getQuestionDetail } from '@/api/home'
   import { ansQuestion, getAnswer } from '@/api/question'
   import { IAnswerList } from '@/types/question'
-  import { IAnswer } from '@/types/question'
-  import { Toast } from 'vant'
+  import { IAnswer } from '@/types/question'  
   const route = useRoute()
   const id:string = route.query.id
   let detail = reactive({data:{}})
