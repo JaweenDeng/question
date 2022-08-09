@@ -13,5 +13,8 @@ router.post('/question/create', questionController.create)
 router.get('/question/getQuestion', questionController.getQuestion)
 router.post('/question/answer', questionController.answerQuestion)
 router.post('/question/uploadImage', loader.upload.single('file'), questionController.uploadImage)
+router.post('/question/deleteQuestion', questionController.deleteQuestion)
+router.get('/question/getQuestionDetail', questionController.getQuestionDetail)
+router.post('/question/updateQuestion', questionController.updateQuestion)
 module.exports = router
  

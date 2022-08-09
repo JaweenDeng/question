@@ -36,7 +36,7 @@ const getAnswer = async (ctx, next) => {
   const id = query.id
   const page = query.page || 1
   const pageSize = query.pageSize || 10
-  const total = await answer_model.count()
+  const total = await answer_model.count({questionId:id})
   const data = await answer_model.find({questionId:id}).skip(((page-1)*pageSize)).limit(pageSize)
   ctx.body = {
     code: 0,

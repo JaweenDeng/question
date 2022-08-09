@@ -13,9 +13,14 @@ const userSchema = new Schema({
     require: true
   },
   account: {
-    type: String
+    type: String,
+    require: true
   },
   password:{
+    type: String,
+    require: true
+  },
+  avator:{
     type: String
   }
 }, { collection: 'user', versionKey: false})

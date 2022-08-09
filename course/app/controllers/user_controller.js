@@ -3,10 +3,12 @@
  * @Description: 用户相关
  */
 const user_model = require('../models/user')
+const question_model = require('../models/question')
 const uuid = require('uuid');
 const bcrypt = require('../utils/bcrypt')
 const jwt = require('jsonwebtoken')
 const config = require('../../config')
+
 //获取全部用户列表
 const getUserList = async (ctx, next) => {
   const user = await user_model.find()
@@ -102,8 +104,65 @@ const register = async (ctx, next) => {
   }
 }
 
+//获取用户信息
+const getUserInfo = async (ctx) => {
+  const token = bcrypt.getToken(ctx)
+  const userId = token.userId
+  const user = await user_model.find({userId})
+  if(user && user.length) {
+    const { account, avator } = user[0]
+    ctx.body = {
+      code:0,
+      data:{ account, avator }
+    }
+  } else {
+    ctx.body = {
+      code:1,
+      msg:'err'
+    }
+  }
+}
+
+// 更换头像
+const updateAvator = async (ctx) => {
+  const req = ctx.request.body
+  const token = bcrypt.getToken(ctx)
+  const userId = token.userId
+  const user = await user_model.updateOne({userId}, {avator:req.avator})
+  if(user) {
+    ctx.body = {
+      code:0,
+      data:'success'
+    }
+  }else {
+    ctx.body = {
+      code:1,
+      data:'error'
+    }
+  }
+} 
+
+//获取我的问题
+const getMyQuestion = async (ctx) => {
+  const req = ctx.request.body
+  const token = bcrypt.getToken(ctx)
+  const userId = token.userId
+  const query = ctx.query
+  const total = await question_model.count({userId})
+  const data = await question_model.find({userId}).skip(((query.page-1)*query.pageSize)).limit(query.pageSize)
+  ctx.body = {
+    code: 0,
+    msg: 'success',
+    data:data,
+    total:total
+  }
+}
+
 module.exports = {
   getUserList,
   register,
-  login
+  login,
+  getUserInfo,
+  updateAvator,
+  getMyQuestion
 }

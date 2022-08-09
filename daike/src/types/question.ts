@@ -16,3 +16,13 @@ export interface IAnswer {
 export interface IAnswerList extends IPage{
   id:String
 }
+
+export interface IFile {
+  name: String,
+  size: Number,
+  type: String
+}
+
+export interface Idelete {
+  id:String
+}

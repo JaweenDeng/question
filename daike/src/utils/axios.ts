@@ -1,5 +1,7 @@
-import axios, { AxiosResponse, AxiosRequestConfig, AxiosInstance } from 'axios';
+import axios, { AxiosResponse, AxiosRequestConfig, AxiosInstance } from 'axios'
 import commonConfig from '@/common/config'
+import router from '@/router'
+
 
 //扩展接口，避免config.headers.Authorizatio报错
 interface IRequestConfig extends AxiosRequestConfig  {
@@ -44,6 +46,9 @@ service.interceptors.response.use(
       const { status } = error.response;
       //如果401或405则到登录页
       if (status == 401 || status == 405) {
+        console.log()
+        const { pathname, search } = window.location
+        router.push(`/login?url=${pathname + search}`)
         console.log('去登陆')
       }
     }

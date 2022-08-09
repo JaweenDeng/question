@@ -37,7 +37,25 @@ const routes: Array<RouteRecordRaw> = [
       requireAuth: false
     },
     component: () => import('@/pages/detail/index.vue')
-  }
+  },
+  {
+    path: '/user',
+    name: 'user',
+    meta: {
+      title: '我的',
+      requireAuth: true
+    },
+    component: () => import('@/pages/user/index.vue')
+  },
+  {
+    path: '/myQuestion',
+    name: 'myQuestion',
+    meta: {
+      title: '我的问题',
+      requireAuth: true
+    },
+    component: () => import('@/pages/user/myQuestion.vue')
+  },
 ]
 
 const router = createRouter({
@@ -49,7 +67,7 @@ const router = createRouter({
 router.beforeEach((to,from,next) => {
   const tokenStr:String|null = localStorage.getItem('token');//获取token值
   if(to.meta.requireAuth && !tokenStr) {
-    next('/login')
+    next(`/login?url=${to.fullPath}`)
     return
   }
   next()

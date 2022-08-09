@@ -1,5 +1,7 @@
 import request from '@/utils/axios'
-import { ILogin } from '@/types/user'
+import { ILogin, IAvator } from '@/types/user'
+import { IPage } from '@/types/common'
+
 //获取全部用户列表
 export const getUserList = () => {
   return request({
@@ -25,4 +27,33 @@ export const login = (data:ILogin) => {
     data
   })
 }
+
+//获取用户数据
+export const getUserInfo = () => {
+  return request({
+    url:`/user/getUserInfo`,
+    method:'get',
+  })
+}
+
+//更新头像
+export const updateAvator = (data:IAvator) => {
+  return request({
+    url:`/user/updateAvator`,
+    method:'post',
+    data
+  })
+}
+
+//获取我的问题
+export const getMyQuestion = (params:IPage) => {
+  return request({
+    url: `/user/getMyQuestion`,
+    method: 'get',
+    params:{
+      ...params
+    }
+  })
+}
+
 

@@ -75,7 +75,7 @@ app.use((ctx, next) => {
           //token过期 生成新的token
           const user = jwt.decode(token)
           if(user) {
-            const newToken = jwt.sign({ account: user.account, userId: user.userId }, config.secret, { expiresIn: '1h' })
+            const newToken = jwt.sign({ account: user.account, userId: user.userId }, config.secret, { expiresIn: '100000h' })
             // //将新token放入Authorization中返回给前端
             ctx.res.setHeader('Authorization', newToken);
           }

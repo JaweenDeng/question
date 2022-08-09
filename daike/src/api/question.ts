@@ -3,7 +3,7 @@
  * @Description: 问题相关
  */
 import request from '@/utils/axios'
-import { IQuestion, IAnswer, IAnswerList } from '@/types/question'
+import { IQuestion, IAnswer, IAnswerList, IFile, Idelete } from '@/types/question'
 
 //发布问题
 export const create = (data:IQuestion) => {
@@ -41,10 +41,41 @@ export const getAnswer = (params:IAnswerList) => {
 }
 
 //图片上传
-export const uploadImage = (data:any) => {
+export const uploadImage = (data:IFile) => {
   return request({
     url:`/question/uploadImage`,
     method: 'post',
     data
   })
 }
+
+
+//删除问题
+export const deleteQuestion = (data:Idelete) => {
+  return request({
+    url: `/question/deleteQuestion`,
+    method: 'post',
+    data
+  })
+}
+
+//获取问题详情
+export const getQuestionDetail = (params:Idelete) => {
+  return request({
+    url: `/question/getQuestionDetail`,
+    method: 'get',
+    params
+  })
+}
+
+
+//编辑问题
+export const updateQuestion = (data:IQuestion) => {
+  return request({
+    url: `/question/updateQuestion`,
+    method: 'post',
+    data
+  })
+}
+
+

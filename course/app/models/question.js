@@ -28,6 +28,9 @@ const questionSchema = new Schema({
   userName:{
     type: String,
     require: true
+  },
+  poster:{
+    type: String
   }
 }, {collection: 'question', versionKey: false})
 
