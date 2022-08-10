@@ -6,13 +6,18 @@ const Koa = require('koa')
 const mongoose = require('mongoose')
 const config = require('./config')
 const path = require('path')
-
 const cors = require('koa2-cors')
 const bodyParser = require('koa-bodyparser')
 const koaJwt = require('koa-jwt')
 const jwt = require('jsonwebtoken')
 // koa-static中间件，用于访问静态文件
 const static = require('koa-static')
+//设置接口文档
+const { koaSwagger } = require('koa2-swagger-ui')
+const swagger = require('./router/swagger')
+//设置
+const {  accessLogger,systemLogger, } = require('./app/utils/logger.js')
+
 const user_router = require('./router/user_router')
 const question_router = require('./router/question_router')
 const home_router = require('./router/home_router')
@@ -33,6 +38,16 @@ app.use(static(path.join(__dirname,'./static')))
 //处理跨域问题
 app.use(cors())
 
+//配置swagger
+app.use(koaSwagger({
+  routePrefix: '/swagger', // host at /swagger instead of default /docs
+  swaggerOptions: {
+    url: '/swagger.json', // example path to json 其实就是之后swagger-jsdoc生成的文档地址
+  },
+}))
+
+//配置日志中间件
+app.use(accessLogger());
 
 //处理post请求参数
 app.use(bodyParser())
@@ -54,7 +69,7 @@ app.use(
   koaJwt({
     secret: config.secret,
   }).unless({
-    path:[/^\/user/, /^\/home/]
+    path:[/^\/swagger/, /^\/home/, /^\/user/]
   })
 )
 
@@ -75,7 +90,7 @@ app.use((ctx, next) => {
           //token过期 生成新的token
           const user = jwt.decode(token)
           if(user) {
-            const newToken = jwt.sign({ account: user.account, userId: user.userId }, config.secret, { expiresIn: '100000h' })
+            const newToken = jwt.sign({ account: user.account, userId: user.userId }, config.secret)
             // //将新token放入Authorization中返回给前端
             ctx.res.setHeader('Authorization', newToken);
           }
@@ -99,5 +114,5 @@ app.use((ctx, next) => {
 app.use(user_router.routes()).use(user_router.allowedMethods())
 app.use(question_router.routes()).use(question_router.allowedMethods())
 app.use(home_router.routes()).use(home_router.allowedMethods())
-
+app.use(swagger.routes(), swagger.allowedMethods())
 app.listen(config.port);
